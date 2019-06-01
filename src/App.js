@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import './App.css'
 import TradeForm from './components/TradeForm'
+import TradeList from './components/TradeList'
 
 class App extends Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
 
     this.state = {
-      trades: []
+      tradeSubmited: {}
     }
 
     this.bind()
@@ -15,36 +16,12 @@ class App extends Component {
 
   bind() {
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
-    this.hasTrades = this.hasTrades.bind(this)
-    this.hasSpecicTrade = this.hasSpecicTrade.bind(this)
   }
 
   handleFormSubmit(trade) {
-    let trades = this.state.trades
-    let tradeIndex = this.hasSpecicTrade(trade.name)
-
-    if (!this.hasTrades() || tradeIndex === -1) {
-      trades.push({
-        name: trade.name,
-        values: [trade.values]
-      })
-    } else {
-      trades[tradeIndex].values.push(trade.values)
-    }
-
     this.setState({
-      trades: trades
+      tradeSubmited: trade
     })
-
-    console.log(this.state.trades)
-  }
-
-  hasTrades() {
-    return !!this.state.trades.length
-  }
-
-  hasSpecicTrade(name) {
-    return this.state.trades.findIndex(trade => trade.name === name)
   }
 
   render() {
@@ -55,6 +32,8 @@ class App extends Component {
 
           <TradeForm onFormSubmit={this.handleFormSubmit}></TradeForm>
         </div>
+
+        <TradeList tradeSubmited={this.state.tradeSubmited}></TradeList>
       </div>
     )
   }
