@@ -1,0 +1,110 @@
+.c-trade-form {
+  max-width: 992px;
+  margin: auto;
+}
+
+.c-trade-form__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: row;
+}
+
+@media screen and (min-width: 992px) {
+  .c-trade-form__wrapper {
+    margin-left: -1.6rem;
+    margin-right: -1.6rem;
+  }
+}
+
+.c-trade-form__field {
+  width: 50%;
+  flex: 0 0 50%;
+  padding: .8rem 2rem;
+}
+
+@media screen and (min-width: 768px) {
+  .c-trade-form__field {
+    width: calc(100% / 5);
+    flex: 0 0 calc(100% / 5);
+    padding: .8rem 2rem;
+  }
+}
+
+.c-trade-form__label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.c-trade-form__select-wrapper {
+  position: relative;
+}
+
+.c-trade-form__select-wrapper::after {
+  content: '';
+  display: block;
+  width: 0; height: 0;
+  position: absolute;
+  top: 1.6rem; right: 1.2rem;
+  border-top: .4rem solid #051F2D;
+  border-left: .4rem solid transparent;
+  border-right: .4rem solid transparent;
+}
+
+.c-trade-form__input,
+.c-trade-form__select {
+  background-color: #FEFFFE;
+  display: block;
+  width: 100%;
+  padding: 1rem 1.6rem;
+  border-radius: .3rem;
+  transition: box-shadow .15s ease;
+}
+
+.c-trade-form__input:focus,
+.c-trade-form__select:focus {
+  box-shadow: 0 0 0 .2rem rgba(254, 255, 254, .6);
+}
+
+.c-trade-form__button-wrapper {
+  width: 100%;
+  flex: 0 0 100%;
+  padding: 2.4rem 2rem 0;
+}
+
+@media screen and (min-width: 768px) {
+  .c-trade-form__button-wrapper {
+    width: 50%;
+    flex: 0 0 50%;
+    padding: 4rem 0 0;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .c-trade-form__button-wrapper {
+    width: 30%;
+    flex: 0 0 30%;
+    padding: 4rem 0 0;
+  }
+}
+
+.c-trade-form__button {
+  display: block;
+  width: 100%;
+  padding: 1.2rem 0;
+  background-color: #FF6663;
+  color: #FFFFFF;
+  border-radius: .3rem;
+  transition: background-color .15s ease,
+    box-shadow .15s ease;
+}
+
+.c-trade-form__button:focus {
+  box-shadow: 0 0 0 .2rem #D15452;
+}
+
+@media screen and (min-width: 992px) {
+  .c-trade-form__button:hover {
+    background-color: #D15452;
+  }
+}

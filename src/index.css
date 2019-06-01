@@ -1,13 +1,56 @@
-body {
+*,
+*::after,
+*::before {
   margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="search"],
+input[type="url"],
+select,
+textarea {
+  background: #ffffff;
+  font-size: inherit;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  appearance: none;
+  border: 0;
+  outline: none;
+}
+
+button,
+input[type="submit"],
+input[type="button"] {
+  font-size: inherit;
+  display: inline-block;
+  padding: .8rem;
+  appearance: none;
+  border: 0;
+  outline: none;
+  cursor: pointer;
 }
