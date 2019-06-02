@@ -17,7 +17,9 @@ class TradeCalculator extends Component {
   bind() {
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
     this.calcultePurchase = this.calcultePurchase.bind(this)
+    this.calculteSale = this.calculteSale.bind(this)
     this.getTradeIndex = this.getTradeIndex.bind(this)
+    this.isPurchaseTrade = this.isPurchaseTrade.bind(this)
   }
 
   handleFormSubmit(tradeSubmited) {
@@ -25,22 +27,34 @@ class TradeCalculator extends Component {
     const tradeIndex = this.getTradeIndex(tradeSubmited.name)
 
     if (!trades.length || tradeIndex === -1) {
-      const { priceAverage, amountAverage } = this.calcultePurchase(tradeSubmited)
+      const { priceAverage, amountAverage } = this.calcultePurchase(tradeSubmited.values)
 
       trades.push({
         name: tradeSubmited.name,
         values: [tradeSubmited.values],
+        result: 0,
+        acumulatedLoss: 0,
+        taxation: 0,
         priceAverage,
         amountAverage
       })
     }
     else {
       const currentTrade = trades[tradeIndex]
-      const { priceAverage, amountAverage } = this.calcultePurchase(currentTrade)
+
+      if (this.isPurchaseTrade(tradeSubmited.values.type)) {
+        const calculatedResult = this.calcultePurchase(tradeSubmited.values, currentTrade)
+
+        Object.keys(calculatedResult)
+          .forEach(key => currentTrade[key] = calculatedResult[key])
+      } else {
+        const calculatedResult = this.calculteSale(tradeSubmited.values, currentTrade)
+
+        Object.keys(calculatedResult)
+          .forEach(key => currentTrade[key] = calculatedResult[key])
+      }
 
       currentTrade.values.push(tradeSubmited.values)
-      currentTrade.priceAverage = priceAverage
-      currentTrade.amountAverage = amountAverage
     }
 
     this.setState({
@@ -48,10 +62,7 @@ class TradeCalculator extends Component {
     })
   }
 
-  calcultePurchase(trade) {
-    const valuesSubmited = Array.isArray(trade.values) ?
-      trade.values[trade.values.length - 1] :
-      trade.values
+  calcultePurchase(valuesSubmited, trade = {}) {
     let priceAverage = trade.priceAverage || 0
     let amountAverage = trade.amountAverage || 0
 
@@ -66,8 +77,38 @@ class TradeCalculator extends Component {
     }
   }
 
+  calculteSale(valuesSubmited, trade = {}) {
+    let result = 0, taxation = 0
+    let acumulatedLoss = trade.acumulatedLoss || 0
+    let priceAverage = trade.priceAverage || 0
+    let amountAverage = trade.amountAverage || 0
+
+    result = (valuesSubmited.price - priceAverage) * valuesSubmited.amount - valuesSubmited.fee
+
+    amountAverage = amountAverage - valuesSubmited.amount
+
+    if (result < 0) {
+      acumulatedLoss = acumulatedLoss + result
+    }
+    else {
+      taxation = (result + Math.min(result, acumulatedLoss)) * 0.15
+      acumulatedLoss = acumulatedLoss - Math.min(result, acumulatedLoss)
+    }
+
+    return {
+      result,
+      taxation,
+      acumulatedLoss,
+      amountAverage
+    }
+  }
+
   getTradeIndex(name) {
     return this.state.trades.findIndex(trade => trade.name === name)
+  }
+
+  isPurchaseTrade(type) {
+    return type === 'purchase'
   }
 
   render() {
