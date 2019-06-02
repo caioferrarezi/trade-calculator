@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 import './TradeForm.css'
 
+function generateId() {
+  return Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15)
+}
+
 class TradeForm extends Component {
   constructor(props) {
     super(props)
@@ -23,14 +28,17 @@ class TradeForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
+    let id = generateId()
 
     this.props.onFormSubmit({
-      name: this.state.name,
+      name: this.state.name.toLowerCase(),
       values: {
+        id: id,
+        createdAt: Date.now(),
         type: this.state.type,
-        price: this.state.price,
-        amount: this.state.amount,
-        fee: this.state.fee
+        price: parseFloat(this.state.price),
+        amount: parseFloat(this.state.amount),
+        fee: parseFloat(this.state.fee)
       }
     })
   }
@@ -49,7 +57,7 @@ class TradeForm extends Component {
         <div className="c-trade-form__wrapper">
           <div className="c-trade-form__field">
             <label className="c-trade-form__label" htmlFor="name">Name:</label>
-            <input className="c-trade-form__input" type="text" id="name" value={this.state.name} onChange={this.handleInputChange} />
+            <input className="c-trade-form__input -name" type="text" id="name" value={this.state.name} onChange={this.handleInputChange} />
           </div>
 
           <div className="c-trade-form__field">

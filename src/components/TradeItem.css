@@ -1,0 +1,27 @@
+.c-trade-item {
+  margin: 3.2rem 1.6rem;
+  box-shadow: 0 .1rem .4rem rgba(0, 0, 0, .2);
+  overflow: hidden;
+  border-radius: .3rem;
+}
+
+@media screen and (min-width: 992px) {
+  .c-trade-item {
+    margin: 3.2rem 0;
+  }
+}
+
+.c-trade-item__title {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  text-transform: uppercase;
+  padding: 1.6rem;
+}
+
+.c-trade-item__list {
+  list-style: none;
+}
+
+.c-trade-item__value {
+  padding: 1.6rem 1.6rem;
+  border-top: .1rem solid #E6E9E6;
+}
