@@ -33,7 +33,7 @@ class TradeCalculator extends Component {
         name: tradeSubmited.name,
         values: [tradeSubmited.values],
         result: 0,
-        acumulatedLoss: 0,
+        accumulatedLoss: 0,
         taxation: 0,
         priceAverage,
         amountAverage
@@ -79,7 +79,7 @@ class TradeCalculator extends Component {
 
   calculteSale(valuesSubmited, trade = {}) {
     let result = 0, taxation = 0
-    let acumulatedLoss = trade.acumulatedLoss || 0
+    let accumulatedLoss = trade.accumulatedLoss || 0
     let priceAverage = trade.priceAverage || 0
     let amountAverage = trade.amountAverage || 0
 
@@ -88,17 +88,17 @@ class TradeCalculator extends Component {
     amountAverage = amountAverage - valuesSubmited.amount
 
     if (result < 0) {
-      acumulatedLoss = acumulatedLoss + result
+      accumulatedLoss = accumulatedLoss + result
     }
     else {
-      taxation = (result + Math.min(result, acumulatedLoss)) * 0.15
-      acumulatedLoss = acumulatedLoss - Math.min(result, acumulatedLoss)
+      taxation = (result + Math.min(result, accumulatedLoss)) * 0.15
+      accumulatedLoss = accumulatedLoss - Math.min(result, accumulatedLoss)
     }
 
     return {
       result,
       taxation,
-      acumulatedLoss,
+      accumulatedLoss,
       amountAverage
     }
   }

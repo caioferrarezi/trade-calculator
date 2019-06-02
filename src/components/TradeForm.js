@@ -24,6 +24,7 @@ class TradeForm extends Component {
   bind() {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   handleSubmit(event) {
@@ -41,13 +42,25 @@ class TradeForm extends Component {
         fee: parseFloat(this.state.fee)
       }
     })
+
+    this.reset()
   }
 
   handleInputChange(event) {
     const target = event.target
 
     this.setState({
-      [target.id]: target.value
+      [target.id]: target.value.replace(',', '.')
+    })
+  }
+
+  reset() {
+    this.setState({
+      type: 'purchase',
+      name: '',
+      price: '',
+      amount: '',
+      fee: ''
     })
   }
 
@@ -57,7 +70,11 @@ class TradeForm extends Component {
         <div className="c-trade-form__wrapper">
           <div className="c-trade-form__field">
             <label className="c-trade-form__label" htmlFor="name">Name:</label>
-            <input className="c-trade-form__input -name" type="text" id="name" value={this.state.name} onChange={this.handleInputChange} />
+            <input className="c-trade-form__input -name"
+              type="text"
+              id="name"
+              value={this.state.name}
+              onChange={this.handleInputChange} />
           </div>
 
           <div className="c-trade-form__field">
@@ -72,17 +89,29 @@ class TradeForm extends Component {
 
           <div className="c-trade-form__field">
             <label className="c-trade-form__label" htmlFor="price">Price:</label>
-            <input className="c-trade-form__input" type="text" id="price" value={this.state.price} onChange={this.handleInputChange} />
+            <input className="c-trade-form__input"
+              type="text"
+              id="price"
+              value={this.state.price}
+              onChange={this.handleInputChange} />
           </div>
 
           <div className="c-trade-form__field">
             <label className="c-trade-form__label" htmlFor="amount">Amount:</label>
-            <input className="c-trade-form__input" type="text" id="amount" value={this.state.amount} onChange={this.handleInputChange} />
+            <input className="c-trade-form__input"
+              type="text"
+              id="amount"
+              value={this.state.amount}
+              onChange={this.handleInputChange} />
           </div>
 
           <div className="c-trade-form__field">
             <label className="c-trade-form__label" htmlFor="fee">Fee:</label>
-            <input className="c-trade-form__input" type="text" id="fee" value={this.state.fee} onChange={this.handleInputChange} />
+            <input className="c-trade-form__input"
+              type="text"
+              id="fee"
+              value={this.state.fee}
+              onChange={this.handleInputChange} />
           </div>
 
           <div className="c-trade-form__button-wrapper">

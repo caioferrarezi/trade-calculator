@@ -1,4 +1,5 @@
 .c-trade-item {
+  text-align: center;
   margin: 3.2rem 1.6rem;
   box-shadow: 0 .1rem .4rem rgba(0, 0, 0, .2);
   overflow: hidden;
@@ -22,6 +23,48 @@
 }
 
 .c-trade-item__value {
-  padding: 1.6rem 1.6rem;
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  padding: 1.6rem;
   border-top: .1rem solid #E6E9E6;
+  transition: background-color .15s ease;
+}
+
+.c-trade-item__value.-header {
+  font-weight: bold;
+}
+
+@media screen and (min-width: 992px) {
+  .c-trade-item__value:not(.-header):hover {
+    background-color: #E6E9E6;
+  }
+}
+
+.c-trade-item__value__item {
+  display: table-cell;
+  text-transform: capitalize;
+}
+
+.c-trade-item__summary {
+  display: flex;
+  overflow: auto;
+  justify-content: flex-start;
+  border-top: .1rem solid #E6E9E6;
+}
+
+@media screen and (min-width: 768px) {
+  .c-trade-item__summary {
+    justify-content: flex-end;
+  }
+}
+
+.c-trade-item__summary__item {
+  padding: 1.6rem;
+  border-right: .1rem solid #E6E9E6;
+  white-space: nowrap;
+}
+
+.c-trade-item__summary__item:last-child {
+  border-right: 0;
 }
