@@ -16,8 +16,8 @@ class TradeCalculator extends Component {
 
   bind() {
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
-    this.calcultePurchase = this.calcultePurchase.bind(this)
-    this.calculteSale = this.calculteSale.bind(this)
+    this.calculatePurchase = this.calculatePurchase.bind(this)
+    this.calculateSale = this.calculateSale.bind(this)
     this.getTradeIndex = this.getTradeIndex.bind(this)
     this.isPurchaseTrade = this.isPurchaseTrade.bind(this)
   }
@@ -27,7 +27,7 @@ class TradeCalculator extends Component {
     const tradeIndex = this.getTradeIndex(tradeSubmited.name)
 
     if (!trades.length || tradeIndex === -1) {
-      const { priceAverage, amountAverage } = this.calcultePurchase(tradeSubmited.values)
+      const { priceAverage, amountAverage } = this.calculatePurchase(tradeSubmited.values)
 
       trades.push({
         name: tradeSubmited.name,
@@ -43,12 +43,12 @@ class TradeCalculator extends Component {
       const currentTrade = trades[tradeIndex]
 
       if (this.isPurchaseTrade(tradeSubmited.values.type)) {
-        const calculatedResult = this.calcultePurchase(tradeSubmited.values, currentTrade)
+        const calculatedResult = this.calculatePurchase(tradeSubmited.values, currentTrade)
 
         Object.keys(calculatedResult)
           .forEach(key => currentTrade[key] = calculatedResult[key])
       } else {
-        const calculatedResult = this.calculteSale(tradeSubmited.values, currentTrade)
+        const calculatedResult = this.calculateSale(tradeSubmited.values, currentTrade)
 
         Object.keys(calculatedResult)
           .forEach(key => currentTrade[key] = calculatedResult[key])
@@ -62,7 +62,7 @@ class TradeCalculator extends Component {
     })
   }
 
-  calcultePurchase(valuesSubmited, trade = {}) {
+  calculatePurchase(valuesSubmited, trade = {}) {
     let priceAverage = trade.priceAverage || 0
     let amountAverage = trade.amountAverage || 0
 
@@ -77,7 +77,7 @@ class TradeCalculator extends Component {
     }
   }
 
-  calculteSale(valuesSubmited, trade = {}) {
+  calculateSale(valuesSubmited, trade = {}) {
     let result = 0, taxation = 0
     let accumulatedLoss = trade.accumulatedLoss || 0
     let priceAverage = trade.priceAverage || 0
