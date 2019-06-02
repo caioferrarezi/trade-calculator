@@ -11,6 +11,12 @@
   }
 }
 
+@media screen and (min-width: 992px) {
+  .l-hero {
+    padding: 12rem 0;
+  }
+}
+
 .l-hero__title {
   font-size: 3.2rem;
   margin-bottom: 1.6rem;

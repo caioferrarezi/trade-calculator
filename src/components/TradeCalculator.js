@@ -115,7 +115,7 @@ class TradeCalculator extends Component {
     let trades = this.state.trades
 
     return (
-      <div className="App">
+      <div>
         <div className="l-hero">
           <h1 className="l-hero__title">Trade Calculator</h1>
 

@@ -103,6 +103,11 @@
     box-shadow .15s ease;
 }
 
+.c-trade-form__button:disabled {
+  opacity: .6;
+  pointer-events: none;
+}
+
 .c-trade-form__button:focus {
   box-shadow: 0 0 0 .2rem #D15452;
 }

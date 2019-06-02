@@ -15,8 +15,11 @@ class TradeForm extends Component {
       name: '',
       price: '',
       amount: '',
-      fee: ''
+      fee: '',
+      isFormValid: false
     }
+
+    this.inputName = React.createRef()
 
     this.bind()
   }
@@ -24,11 +27,27 @@ class TradeForm extends Component {
   bind() {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.validate = this.validate.bind(this);
     this.reset = this.reset.bind(this);
+  }
+
+  componentDidMount() {
+    this.inputName.current.focus()
+  }
+
+  componentDidUpdate(prevProp, prevState) {
+    let isFormValid = this.validate()
+    if (prevState.isFormValid !== isFormValid)
+      this.setState({
+        isFormValid
+      })
   }
 
   handleSubmit(event) {
     event.preventDefault()
+
+    if (!this.state.isFormValid) return
+
     let id = generateId()
 
     this.props.onFormSubmit({
@@ -44,6 +63,7 @@ class TradeForm extends Component {
     })
 
     this.reset()
+    this.inputName.current.focus()
   }
 
   handleInputChange(event) {
@@ -52,6 +72,19 @@ class TradeForm extends Component {
     this.setState({
       [target.id]: target.value.replace(',', '.')
     })
+  }
+
+  validate() {
+    let state = this.state;
+
+    let isValid =
+      !!state.type &&
+      !!state.name &&
+      !!state.price &&
+      !!state.amount &&
+      !!state.fee
+
+    return isValid
   }
 
   reset() {
@@ -73,6 +106,7 @@ class TradeForm extends Component {
             <input className="c-trade-form__input -name"
               type="text"
               id="name"
+              ref={this.inputName}
               value={this.state.name}
               onChange={this.handleInputChange} />
           </div>
@@ -115,7 +149,7 @@ class TradeForm extends Component {
           </div>
 
           <div className="c-trade-form__button-wrapper">
-            <button type="submit" className="c-trade-form__button">Calculate</button>
+            <button type="submit" className="c-trade-form__button" disabled={!this.state.isFormValid}>Calculate</button>
           </div>
         </div>
       </form>
