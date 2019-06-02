@@ -12,8 +12,9 @@ class TradeItem extends Component {
     this.formatCurrency = this.formatCurrency.bind(this)
   }
 
-  formatCurrency(value) {
-    return value > 0 ? value.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : 0
+  formatCurrency(value, shouldShowNegative = true) {
+    return value > 0 || (value < 0 && shouldShowNegative) ?
+      value.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : 0
   }
 
   render() {
@@ -53,7 +54,7 @@ class TradeItem extends Component {
             <strong>Accumulated loss:</strong> {this.formatCurrency(trade.accumulatedLoss)}
           </span>
           <span className="c-trade-item__summary__item">
-            <strong>Income tax:</strong> {this.formatCurrency(trade.taxation)}
+            <strong>Income tax:</strong> {this.formatCurrency(trade.taxation, false)}
           </span>
         </div>
       </div>

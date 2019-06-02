@@ -91,7 +91,7 @@ class TradeCalculator extends Component {
       accumulatedLoss = accumulatedLoss + result
     }
     else {
-      taxation = (result + Math.min(result, accumulatedLoss)) * 0.15
+      taxation = (result - Math.abs(Math.min(result, accumulatedLoss))) * 0.15
       accumulatedLoss = accumulatedLoss - Math.min(result, accumulatedLoss)
     }
 
