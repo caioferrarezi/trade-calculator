@@ -58,7 +58,7 @@
   width: 100%;
   padding: 1rem 1.6rem;
   border-radius: .3rem;
-  transition: box-shadow .15s ease;
+  transition: box-shadow .15s ease, background-color .15s ease;
 }
 
 .c-trade-form__input:focus,
@@ -70,6 +70,7 @@
 .c-trade-form__select.is-invalid,
 .c-trade-form__input.is-invalid:focus,
 .c-trade-form__select.is-invalid:focus {
+  background-color: #f8d7da;
   box-shadow: 0 0 0 .2rem rgb(197, 9, 9);
 }
 

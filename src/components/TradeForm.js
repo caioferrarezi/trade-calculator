@@ -4,7 +4,8 @@ import classnames from 'classnames'
 
 const validators = {
   isNotBlank: /^(?!\s*$).+/g,
-  isNumber: /^(\d*\.?\d*)$/g
+  isNumber: /^(\d*\.?\d*)$/g,
+  isNotEmpty: /^(?!0*$).+/g
 }
 
 function generateId() {
@@ -38,11 +39,16 @@ class TradeForm extends Component {
           value: 0,
           isValid: true,
         }
-      },
-      isFormValid: false,
+      }
     }
 
-    this.inputName = React.createRef()
+    this.inputRefs = {
+      type: React.createRef(),
+      name: React.createRef(),
+      price: React.createRef(),
+      amount: React.createRef(),
+      fee: React.createRef()
+    }
 
     this.bind()
   }
@@ -56,39 +62,29 @@ class TradeForm extends Component {
   }
 
   componentDidMount() {
-    this.inputName.current.focus()
-  }
-
-  componentDidUpdate(prevProp, prevState) {
-    let isFormValid = this.validate()
-
-    if (prevState.isFormValid !== isFormValid)
-      this.setState({
-        isFormValid
-      })
+    this.inputRefs.name.current.focus()
   }
 
   handleSubmit(event) {
+    const inputs = this.state.inputs
+
     event.preventDefault()
-
-    if (!this.state.isFormValid) return
-
-    let id = generateId()
+    if (!this.validate()) return
 
     this.props.onFormSubmit({
-      name: this.state.name.toLowerCase(),
+      name: inputs.name.value.toLowerCase(),
       values: {
-        id: id,
+        id: generateId(),
         createdAt: Date.now(),
-        type: this.state.type,
-        price: parseFloat(this.state.price),
-        amount: parseFloat(this.state.amount),
-        fee: parseFloat(this.state.fee)
+        type: inputs.type.value,
+        price: parseFloat(inputs.price.value),
+        amount: parseFloat(inputs.amount.value),
+        fee: parseFloat(inputs.fee.value)
       }
     })
 
     this.reset()
-    this.inputName.current.focus()
+    this.inputRefs.name.current.focus()
   }
 
   handleInputChange(event) {
@@ -96,7 +92,8 @@ class TradeForm extends Component {
     let inputs = {...this.state.inputs}
 
     inputs[target.id].value = target.value.replace(',', '.')
-    inputs[target.id].isValid = this.validateInput(target)
+
+    this.validateInput(target)
 
     this.setState({
       inputs
@@ -104,6 +101,7 @@ class TradeForm extends Component {
   }
 
   validateInput(input) {
+    const inputs = {...this.state.inputs}
     const validations = input.dataset.validation.split(', ')
     let isValid = true;
 
@@ -111,32 +109,44 @@ class TradeForm extends Component {
       isValid = isValid && !!input.value.match(validators[validation])
     })
 
+    inputs[input.id].isValid = isValid
+
+    this.setState({
+      inputs
+    })
+
     return isValid
   }
 
   validate() {
-    const inputs = this.state.inputs
+    const inputRefs = this.inputRefs
     let isValid = true;
 
-    Object.keys(inputs).forEach(key => {
-      isValid = isValid && inputs[key].isValid
+    Object.keys(inputRefs).forEach(key => {
+      let inputValidated = this.validateInput(inputRefs[key].current)
+      isValid = isValid && inputValidated
     })
 
     return isValid
   }
 
   reset() {
+    const inputs = {...this.state.inputs}
+
+    inputs.type.value = 'purchase'
+    inputs.name.value = ''
+    inputs.price.value = 0
+    inputs.amount.value = 0
+    inputs.fee.value = 0
+
     this.setState({
-      type: 'purchase',
-      name: '',
-      price: '',
-      amount: '',
-      fee: ''
+      inputs
     })
   }
 
   render() {
     const inputs = this.state.inputs
+    const inputRefs = this.inputRefs
 
     return(
       <form className="c-trade-form" onSubmit={this.handleSubmit}>
@@ -150,7 +160,7 @@ class TradeForm extends Component {
               type="text"
               id="name"
               data-validation="isNotBlank"
-              ref={this.inputName}
+              ref={inputRefs.name}
               value={inputs.name.value}
               onChange={this.handleInputChange} />
           </div>
@@ -164,6 +174,7 @@ class TradeForm extends Component {
               })}
                 id="type"
                 data-validation="isNotBlank"
+                ref={inputRefs.type}
                 value={inputs.type.value}
                 onChange={this.handleInputChange}>
                 <option value="purchase">Purchase</option>
@@ -180,7 +191,8 @@ class TradeForm extends Component {
             })}
               type="text"
               id="price"
-              data-validation="isNotBlank, isNumber"
+              data-validation="isNotBlank, isNotEmpty, isNumber"
+              ref={inputRefs.price}
               value={inputs.price.value}
               onChange={this.handleInputChange} />
           </div>
@@ -193,7 +205,8 @@ class TradeForm extends Component {
             })}
               type="text"
               id="amount"
-              data-validation="isNotBlank, isNumber"
+              data-validation="isNotBlank, isNotEmpty, isNumber"
+              ref={inputRefs.amount}
               value={inputs.amount.value}
               onChange={this.handleInputChange} />
           </div>
@@ -207,12 +220,13 @@ class TradeForm extends Component {
               type="text"
               id="fee"
               data-validation="isNotBlank, isNumber"
+              ref={inputRefs.fee}
               value={inputs.fee.value}
               onChange={this.handleInputChange} />
           </div>
 
           <div className="c-trade-form__button-wrapper">
-            <button type="submit" className="c-trade-form__button" disabled={!this.state.isFormValid}>Calculate</button>
+            <button type="submit" className="c-trade-form__button">Calculate</button>
           </div>
         </div>
       </form>
