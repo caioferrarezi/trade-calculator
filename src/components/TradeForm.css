@@ -61,13 +61,20 @@
   transition: box-shadow .15s ease;
 }
 
-.c-trade-form__input.-name {
-  text-transform: uppercase;
-}
-
 .c-trade-form__input:focus,
 .c-trade-form__select:focus {
   box-shadow: 0 0 0 .2rem rgba(254, 255, 254, .6);
+}
+
+.c-trade-form__input.is-invalid,
+.c-trade-form__select.is-invalid,
+.c-trade-form__input.is-invalid:focus,
+.c-trade-form__select.is-invalid:focus {
+  box-shadow: 0 0 0 .2rem rgb(197, 9, 9);
+}
+
+.c-trade-form__input.-name {
+  text-transform: uppercase;
 }
 
 .c-trade-form__button-wrapper {
